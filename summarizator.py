@@ -1,4 +1,4 @@
-from lib.io import read_articles
+from src.io import read_articles
 
 articles = read_articles("./articles")
 
