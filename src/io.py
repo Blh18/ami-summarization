@@ -1,6 +1,7 @@
 import os
 import nltk
 from model.document import Document
+from src.graph import create_graph, process_document, count_tfidf
 
 
 def read_articles(path):
@@ -10,8 +11,9 @@ def read_articles(path):
     for filename in os.listdir(path):
         with open(path + '/' + filename) as file:
             doc = Document(cnt, file.read())
-            # doc.words = nltk.word_tokenize(doc.raw_text)
-            # doc.sentences = nltk.sent_tokenize(doc.raw_text)
+            doc.words, doc.sentences = process_document(doc.raw_text)
+            count_tfidf(doc.sentences, doc.words)
+            doc.graph = create_graph(doc.sentences, doc.words)
             cnt = cnt + 1
             articles.append(doc)
 
