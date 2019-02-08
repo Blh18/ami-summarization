@@ -5,8 +5,7 @@ import networkx as net
 
 articles = read_articles("./articles")
 
-net.draw(articles[0].graph,
-         pos=net.spring_layout(articles[1].graph))
+net.draw(articles[0].graph)
 plt.show()
 
 v = net.pagerank(articles[0].graph)
