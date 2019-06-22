@@ -3,7 +3,8 @@ import nltk
 from model.document import Document
 from src.graph import create_graph, process_document, count_tfidf
 
-
+# load all articles from a folder and process them
+# also computes tfidfs and creates graph of sentences
 def read_articles(path):
     articles = []
     cnt = 0

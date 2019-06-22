@@ -23,7 +23,7 @@ stemmer = snowball.EnglishStemmer()
 
 text_classifier = tc.TextCat()
 
-
+# create graph where nodes are sentences and edges are present if sentences are similar
 def create_graph(sentences, words):
     graph = net.Graph()
     for s in sentences:
@@ -31,7 +31,7 @@ def create_graph(sentences, words):
     graph = add_edges(graph, sentences, words)
     return graph
 
-
+# create an edge in case the similarity of two sentences is above certain threshold
 def add_edges(graph, sentences, words):
     for s1 in sentences:
         for s2 in sentences:
@@ -40,10 +40,9 @@ def add_edges(graph, sentences, words):
             similarity = count_cosine_similarity(s1, s2, len(sentences), words)
             if similarity > 0.7:
                 graph.add_edge(s1.raw_text, s2.raw_text)
-                print("add")
     return graph
 
-
+# compute cosine similarity of two sentences using precomputed tfidf
 def count_cosine_similarity(s1, s2, n, document):
     nominator = 0
     intersect = set(s1.words)
@@ -56,7 +55,8 @@ def count_cosine_similarity(s1, s2, n, document):
     denominator = math.sqrt(s1.tfidf) * math.sqrt(s2.tfidf)
     return nominator / denominator
 
-
+# split text into sentences
+# process each sentences to create bag of words in a sentence
 def process_document(text):
     raw_sentences = nltk.sent_tokenize(text)
     sentences = []
@@ -74,7 +74,8 @@ def process_document(text):
 
     return document, sentences
 
-
+# inserts a word into a dictionary in case it is not a stop word
+# stemmer is used to store just the root of word
 def increase_dict_value(words, dictionary):
     for w in words:
         if w in stops:
@@ -85,7 +86,7 @@ def increase_dict_value(words, dictionary):
         else:
             dictionary[w] = 1
 
-
+# compute tfidf of all sentences in a document
 def count_tfidf(sentences, document):
     for s in sentences:
         tf_idf_sum = 0
